@@ -1,0 +1,34 @@
+UNCONSTRAINED
+8.2 -> 7.0613
+0.00116 ->0.16582
+0.042 ->0.045461
+
+tol=0.2
+8.2 -> 8.33589953820074
+0.00116-> 0.00135996430266368
+0.042 -> 0.0422195895931847
+
+With those paramethers and sum(square error):
+
+Kv=0.759302921391716
+Voff=-0.153031713454100
+
+Tried max(square error) and mean(square error) but didn't really work, max was awful mean was not very different from sum 
+
+Con esponenziale:
+V0=0.68941
+k=0.0049239
+Voff=-0.08225
+
+R=8.6688
+L=0.0014463
+Ko=0.041327
+
+
+TUTTI E CINQUE
+R=8.7383
+L=0.0015
+Ko=0.0410
+e=0.0056
+Kv=0.6806
+Voff=-0.1012

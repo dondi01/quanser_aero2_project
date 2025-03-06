@@ -1,15 +1,21 @@
 function err = machine(params,I_meas)
-% Kv=params(1);
-% Voff=params(2);
+%Kv=params(1);
+%Voff=params(2);
+%e=params(3);
 
 R=params(1);
 L=params(2);
 Ko=params(3);
+e=params(4);
+Kv=params(5);
+Voff=params(6);
+
 
 set_param("machine_model/R", 'Value',string(R));
 set_param("machine_model/L", 'Value',string(L));
-%set_param("machine_model/Kv", 'Gain',string(Kv));
-%set_param("machine_model/Voff", 'Value',string(Voff));
+set_param("machine_model/Kv", 'Gain',string(Kv));
+set_param("machine_model/Voff", 'Value',string(Voff));
+set_param("machine_model/exp", 'Gain',string(e));
 set_param("machine_model/Ko", 'Gain',string(Ko));
 
 I=sim("machine_model");
