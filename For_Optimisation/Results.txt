@@ -1,0 +1,65 @@
+TORQUE:
+
+V to Omega (square):
+gamma=-0.0012417
+mu=15.2861
+tau=0.16199
+
+V to Omega(cubic):
+gamma=-3.8077e-06
+mu=14.1439
+tau=0.16907 (pretty much didn't change, as expected)
+
+V_s-from V[WRONG APPROACH]
+tau=0.0024
+gamma=5.0082e-07
+mu=2.0310e-04
+
+V_S-From I [WRONG APPROACH]:
+K_square=4.7206e-07
+K_tf=1.5316e-13 [pretty much zero]
+denominator=0.165s+1
+-------------------------------------------------------------------------------
+MOTOR:
+
+UNCONSTRAINED
+8.2 -> 7.0613
+0.00116 ->0.16582
+0.042 ->0.045461
+
+tol=0.2
+8.2 -> 8.33589953820074
+0.00116-> 0.00135996430266368
+0.042 -> 0.0422195895931847
+
+With those paramethers and sum(square error):
+
+Kv=0.759302921391716
+Voff=-0.153031713454100
+
+Tried max(square error) and mean(square error) but didn't really work, max was awful mean was not very different from sum 
+
+Con esponenziale:
+V0=0.68941
+k=0.0049239
+Voff=-0.08225
+
+R=8.6688
+L=0.0014463
+Ko=0.041327
+
+
+TUTTI E CINQUE
+R=8.7383
+L=0.0015
+Ko=0.0410
+e=0.0056
+Kv=0.6806
+Voff=-0.1012
+
+SQUARE (only the gains):
+K_square=0.0041229
+K_V=0.6799
+V_off=-0.096188
+
+-----------------------------------------------------------------------------
