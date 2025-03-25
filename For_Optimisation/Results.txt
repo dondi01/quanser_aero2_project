@@ -1,3 +1,12 @@
+FORCE:
+
+FROM EQUILIBRIA (SIMPLE DIVISION):
+beta=4.0345e-06
+
+FROM YAW (not yaw_dot):
+C=0.0053513
+fs=0.0071273
+
 TORQUE:
 
 V to Omega (square):

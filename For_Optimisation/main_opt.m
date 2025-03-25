@@ -1,16 +1,25 @@
 clear
-load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
+%load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
+load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_11_24.mat
 
 %data=data(:,1:124588);
 t=data(1,:)';
-V=[t,data(2,:)'];
-I=data(4,:)';
-Omega=[t,data(10,:)'];
-
+V0=[t,data(2,:)'];
+V1=[t,data(3,:)'];
+I0=data(4,:)';
+I1=data(5,:)';
+Omega0=[t,data(10,:)'];
+Omega1=[t,data(11,:)'];
+yaw=[t,data(7,:)'];
+yaw_dot=[t,derivate_better(data(7,:))'];
+%AL_parameters;
 options=optimoptions('fmincon','Display','iter-detailed','FiniteDifferenceType',...
-    'central');
+    'central','StepTolerance',1e-15);
+%% Force model
+handle=@(params)yaw_error(params,yaw_dot(:,2));
+par=fmincon(handle,par,[-1,0;0,-1],[0;0],[],[],[],[],[],options);
 
-%% force model least square
+%% torque model least square
 % A=V(:,2);
 % y=Omega(:,2)-5.0082e-07*Omega(:,2).^2;
 % 
