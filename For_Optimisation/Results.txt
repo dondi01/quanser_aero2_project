@@ -3,19 +3,42 @@ FORCE:
 FROM EQUILIBRIA (SIMPLE DIVISION):
 beta=4.0345e-06
 
-FROM YAW (not yaw_dot):
+FROM EQUILIBRIA (OPTIMIZED):
+beta_1st=-2.522922e-05
+beta_2nd=4.01487e-06
+
+WITH 2 BETAS:
+YAW:
+C=0.0051079
+fs=0.0069201
+
+PITCH:
+C=
+fs=
+
+WITH ONE BETA:
+YAW (not yaw_dot, yaw_dot too was very similar):
 C=0.0053513
 fs=0.0071273
+
+YAW (not yaw_dot), with also Jy (might be overfitting):
+C=0.0051774
+fs=0.0073826
+Jy=0.0269 (vs original 2.38e-2, close enough to be realistic?)
+
+
 
 TORQUE:
 
 V to Omega (square):
+actual_gamma=6.3599e-06
 gamma=-0.0012417
 mu=15.2861
 tau=0.16199
 
 V to Omega(cubic):
-gamma=-3.8077e-06
+actual_gamma=
+gamma=1.9503e-08
 mu=14.1439
 tau=0.16907 (pretty much didn't change, as expected)
 

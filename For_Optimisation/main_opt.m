@@ -1,9 +1,16 @@
 clear
 %load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
-load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_11_24.mat
+% load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_0_11.mat
+% data_tmp=data;
+% load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_11_24.mat
+% data=[data_tmp,data];
+load ..\experiments_data\DYNAMIC_PITCH\DYNAMIC_PITCH\PITCH_DYNAMIC_ZERO_IN_M0_SHIFTED.mat 
 
-%data=data(:,1:124588);
+
 t=data(1,:)';
+t=0:(t(2)-t(1)):length(t)/500;
+t=t(1:end-1)';
+
 V0=[t,data(2,:)'];
 V1=[t,data(3,:)'];
 I0=data(4,:)';
@@ -12,12 +19,19 @@ Omega0=[t,data(10,:)'];
 Omega1=[t,data(11,:)'];
 yaw=[t,data(7,:)'];
 yaw_dot=[t,derivate_better(data(7,:))'];
+pitch=[t,data(6,:)'];
+
+
 %AL_parameters;
 options=optimoptions('fmincon','Display','iter-detailed','FiniteDifferenceType',...
-    'central','StepTolerance',1e-15);
+    'central');
+%% Pitch parameters 
+handle=@(params)pitch_err(params,pitch(:,2));
+fmincon(handle,0.0016918,-1,0,[],[],[],[],[],options)
+
 %% Force model
-handle=@(params)yaw_error(params,yaw_dot(:,2));
-par=fmincon(handle,par,[-1,0;0,-1],[0;0],[],[],[],[],[],options);
+handle=@(params)yaw_error(params,yaw(:,2));
+par=fmincon(handle,[0.0053513,0.0071273],[-1,0;0,-1],[0;0],[],[],[],[],[],options);
 
 %% torque model least square
 % A=V(:,2);
