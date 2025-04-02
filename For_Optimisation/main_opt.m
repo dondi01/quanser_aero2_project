@@ -1,10 +1,10 @@
 clear
-%load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
+load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
 % load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_0_11.mat
 % data_tmp=data;
 % load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_11_24.mat
 % data=[data_tmp,data];
-load ..\experiments_data\DYNAMIC_PITCH\DYNAMIC_PITCH\PITCH_DYNAMIC_ZERO_IN_M0_SHIFTED.mat 
+%load ..\experiments_data\DYNAMIC_PITCH\DYNAMIC_PITCH\PITCH_DYNAMIC_ZERO_IN_M0_SHIFTED.mat 
 
 
 t=data(1,:)';
@@ -18,7 +18,7 @@ I1=data(5,:)';
 Omega0=[t,data(10,:)'];
 Omega1=[t,data(11,:)'];
 yaw=[t,data(7,:)'];
-yaw_dot=[t,derivate_better(data(7,:))'];
+%yaw_dot=[t,derivate_better(data(7,:))'];
 pitch=[t,data(6,:)'];
 
 

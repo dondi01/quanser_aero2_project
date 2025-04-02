@@ -2,3 +2,5 @@
 *.slxc
 *.asv
 *.original
+/MPC/slprj
+*.autosave
