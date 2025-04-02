@@ -28,10 +28,10 @@ check_position=PI_position-C_position
 
 %fc=feedback(C*S,1);
 %pzplot(fc)
-%margin(PI_position*S)
+margin(PI_position*S)
 
 mu_omega=15.2861;
-C_omega=(0.16199*s+1)/s/15.2861*100;
+C_omega=(0.16199*s+1)/s/15.2861*10;
 
 I_omega=C_omega.Numerator{:}(end)/mu_omega;
 P_omega=C_omega.Numerator{:}(1)/mu_omega;

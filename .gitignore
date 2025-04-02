@@ -5,3 +5,6 @@
 /MPC/slprj
 *.autosave
 /MPC/codegen
+*.mat
+*.mat
+*.mat
