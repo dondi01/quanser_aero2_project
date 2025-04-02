@@ -14,4 +14,4 @@ for i=2:len+1
 end
 
 %plot(pitch)
-pitch_error=sum((pitch(2:end)-setpoint).^2+pitch_dot(2:end).^2);
+pitch_error=sum((pitch(2:end)-setpoint).^2);

@@ -4,3 +4,4 @@
 *.original
 /MPC/slprj
 *.autosave
+/MPC/codegen
