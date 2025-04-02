@@ -58,31 +58,45 @@ classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
             % such as pre-computed constants.
             
             import casadi.*
+            
+            Mb = 1.07;
+            Dm = 0.00240;
+            Jp = 0.0232;
+            g = 9.81;
+            Dt = 0.167;
+            C=0.001763;
+            beta=0.0000037343;
 
-            T = 10; % Time horizon
-            N = 20; % number of control intervals
+            T = 1; % Time horizon
+            N = 10; % number of control intervals
 
             % Declare model variables
             x1 = SX.sym('x1');
             x2 = SX.sym('x2');
-            x = [x1; x2];
-            u = SX.sym('u');
+            x3= SX.sym('x3');
+            x4=SX.sym('x4');
+            x = [x1; x2; x3;x4];
 
+            u = SX.sym('u');
+            
             % Model equations
-            xdot = [(1-x2^2)*x1 - x2 + u; x1];
+            xdot = [x2; 1/Jp*( ...
+            beta*(u^2*sign(u)*2)*Dt ...
+            -C*x2 ...
+            -Mb*g*Dm*sin(x1));0;0];
 
             % Objective term
-            L = x1^2 + x2^2 + u^2;
+            L =(x1-x3)^2;
 
             % Continuous time dynamics
             f = casadi.Function('f', {x, u}, {xdot, L});
 
             % Formulate discrete time dynamics
             % Fixed step Runge-Kutta 4 integrator
-            M = 4; % RK4 steps per interval
+            M = 1; % RK4 steps per interval
             DT = T/N/M;
             f = Function('f', {x, u}, {xdot, L});
-            X0 = MX.sym('X0', 2);
+            X0 = MX.sym('X0', 4);
             U = MX.sym('U');
             X = X0;
             Q = 0;
@@ -94,6 +108,7 @@ classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
                X=X+DT/6*(k1 +2*k2 +2*k3 +k4);
                Q = Q + DT/6*(k1_q + 2*k2_q + 2*k3_q + k4_q);
             end
+
             F = Function('F', {X0, U}, {X, Q}, {'x0','p'}, {'xf', 'qf'});
 
             % Start with an empty NLP
@@ -107,11 +122,11 @@ classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
             ubg = [];
 
             % "Lift" initial conditions
-            X0 = MX.sym('X0', 2);
+            X0 = MX.sym('X0', 4);
             w = {w{:}, X0};
-            lbw = [lbw; 0; 1];
-            ubw = [ubw; 0; 1];
-            w0 = [w0; 0; 1];
+            lbw = [lbw; -inf;-inf;-inf;-inf];
+            ubw = [ubw; inf;inf;inf;inf];
+            w0 = [w0; 0; 0; 0; 0];
 
             % Formulate the NLP
             Xk = X0;
@@ -119,9 +134,9 @@ classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
                 % New NLP variable for the control
                 Uk = MX.sym(['U_' num2str(k)]);
                 w = {w{:}, Uk};
-                lbw = [lbw; -1];
-                ubw = [ubw;  1];
-                w0 = [w0;  0];
+                lbw = [lbw; -270];
+                ubw = [ubw;  270];
+                w0 = [w0;200];
 
                 % Integrate till the end of the interval
                 Fk = F('x0', Xk, 'p', Uk);
@@ -129,16 +144,16 @@ classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
                 J=J+Fk.qf;
 
                 % New NLP variable for state at end of interval
-                Xk = MX.sym(['X_' num2str(k+1)], 2);
+                Xk = MX.sym(['X_' num2str(k+1)], 4);
                 w = {w{:}, Xk};
-                lbw = [lbw; -0.25; -inf];
-                ubw = [ubw;  inf;  inf];
-                w0 = [w0; 0; 0];
+                lbw = [lbw; -inf; -inf;-inf;-inf];
+                ubw = [ubw;  inf;  inf; inf;inf];
+                w0 = [w0; 0; 0; 0; 0];
 
                 % Add equality constraint
                 g = {g{:}, Xk_end-Xk};
-                lbg = [lbg; 0; 0];
-                ubg = [ubg; 0; 0];
+                lbg = [lbg; 0; 0;0; 0];
+                ubg = [ubg; 0; 0;0; 0];
             end
 
             % Create an NLP solver
@@ -155,19 +170,17 @@ classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
         end
 
         function u = stepImpl(obj,x,t)
-            disp(t)
-            tic
             w0 = obj.x0;
             lbw = obj.lbx;
             ubw = obj.ubx;
             solver = obj.casadi_solver;
-            lbw(1:2) = x;
-            ubw(1:2) = x;
+            lbw(1:4) = x;
+            ubw(1:4) = x;
+
             sol = solver('x0', w0, 'lbx', lbw, 'ubx', ubw,...
-                        'lbg', obj.lbg, 'ubg', obj.ubg);
+                        'lbg', obj.lbg, 'ubg',obj.ubg);
   
-            u = full(sol.x(3));
-            toc
+            u = full(sol.x(5));
         end
 
         function resetImpl(obj)
