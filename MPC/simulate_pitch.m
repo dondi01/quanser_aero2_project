@@ -13,4 +13,4 @@ for i=2:len+1
     psi_dot(i)=cur_state(2);
 end
 %plot(pitch)
-pitch_error=sum((pitch(2:end)-setpoint).^2+ var(V)/(abs(max(V))+(max(V)==0)));
+pitch_error=sum((pitch(1:end)-setpoint).^2*(1+var(V)));
