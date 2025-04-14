@@ -1,0 +1,72 @@
+[System]
+Name='sugenotype2_new_rules_001_almost_acceptable'
+Type='sugeno'
+Version=3.0
+NumInputs=2
+NumOutputs=3
+NumRules=15
+AndMethod='prod'
+OrMethod='probor'
+ImpMethod='prod'
+AggMethod='sum'
+DefuzzMethod='wtaver'
+TypeReductionMethod='karnikmendel'
+
+[Input1]
+Name='pitch_error'
+Range=[-1.5707963267949 1.5707963267949]
+NumMFs=5
+MF1='high_negative':'trapmf',[-2.16 -1.636 -1.505 -0.2],[1],[0 0]
+MF2='medium_negative':'trimf',[-0.3966 -0.2143 -0.02932],[1],[0 0]
+MF3='small':'trapmf',[-0.0698 -0.03491 0.03491 0.0698],[1],[0 0]
+MF4='medium_positive':'trimf',[0.02932 0.2143 0.3966],[1],[0 0]
+MF5='high_positive':'trapmf',[0.2 1.505 1.636 2.16],[1],[0 0]
+
+[Input2]
+Name='pitch_dot_error'
+Range=[-1.5 1.5]
+NumMFs=3
+MF1='high_negative':'trimf',[-2.75 -1.5 -0.1],[1],[0 0]
+MF2='small':'trimf',[-0.2 0 0.2],[1],[0 0]
+MF3='high_positive':'trimf',[0.1 1.5 2.75],[1],[0 0]
+
+[Output1]
+Name='Kp'
+Range=[200 3826.12]
+NumMFs=3
+MF1='low':'constant',[200]
+MF2='medium':'constant',[12682.5563]
+MF3='high':'constant',[25165.1126]
+
+[Output2]
+Name='Ki'
+Range=[10 72]
+NumMFs=3
+MF1='low':'constant',[10]
+MF2='medium':'constant',[41]
+MF3='high':'constant',[72]
+
+[Output3]
+Name='Kd'
+Range=[0 50389]
+NumMFs=3
+MF1='low':'constant',[0]
+MF2='medium':'constant',[25194.5]
+MF3='high':'constant',[50389]
+
+[Rules]
+1 1, 3 1 3 (1) : 1
+2 1, 2 1 3 (1) : 1
+3 1, 2 1 3 (1) : 1
+4 1, 2 2 3 (1) : 1
+5 1, 3 1 3 (1) : 1
+1 2, 3 3 1 (1) : 1
+2 2, 2 2 1 (1) : 1
+3 2, 1 1 1 (1) : 1
+4 2, 2 2 1 (1) : 1
+5 2, 3 3 1 (1) : 1
+1 3, 3 1 3 (1) : 1
+2 3, 2 2 3 (1) : 1
+3 3, 2 1 3 (1) : 1
+4 3, 2 1 3 (1) : 1
+5 3, 3 1 3 (1) : 1

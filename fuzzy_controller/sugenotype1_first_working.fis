@@ -1,0 +1,47 @@
+[System]
+Name='sugenotype1_first_working'
+Type='sugeno'
+Version=2.0
+NumInputs=1
+NumOutputs=3
+NumRules=3
+AndMethod='prod'
+OrMethod='probor'
+ImpMethod='prod'
+AggMethod='sum'
+DefuzzMethod='wtaver'
+
+[Input1]
+Name='pitch_error'
+Range=[0 90]
+NumMFs=3
+MF1='low':'trimf',[-1 0 1]
+MF2='medium':'trimf',[0.5 2.75 5]
+MF3='high':'trapmf',[2.75 5 91 93.44]
+
+[Output1]
+Name='Kp'
+Range=[200 181888]
+NumMFs=2
+MF1='low':'constant',[200]
+MF2='high':'constant',[181888]
+
+[Output2]
+Name='Ki'
+Range=[0 50000]
+NumMFs=3
+MF1='low':'constant',[0]
+MF2='high':'constant',[50000]
+MF3='medium':'constant',[2500]
+
+[Output3]
+Name='Kd'
+Range=[0 180320]
+NumMFs=2
+MF1='low':'constant',[0]
+MF2='high':'constant',[180320]
+
+[Rules]
+1, 2 2 2 (1) : 1
+2, 2 3 2 (1) : 1
+3, 2 1 2 (1) : 1
