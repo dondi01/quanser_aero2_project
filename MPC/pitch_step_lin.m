@@ -1,4 +1,4 @@
-function [state,omega_fan_dot]= pitch_step(state_old,V,Ts,setpoint,t)
+function [state,omega_fan_dot]= pitch_step_lin(state_old,V,Ts,setpoint,t)
 
 Mb = 1.07;
 Dm = 0.00240;
@@ -27,7 +27,8 @@ omega_fan_upd1=omega_fan1+Ts*omega_fan_dot1;
 psi_double_dot=1/Jp*( ...
     beta*(omega_fan_upd0^2*sign(omega_fan_upd0)-omega_fan_upd1^2*sign(omega_fan_upd1))*Dt ...
     -C*pitch_dot ...
-    -Mb*g*Dm*sin(pitch));
+    -Mb*g*Dm*sin(setpoint)...
+    -Mb*g*Dm*cos(setpoint)*(pitch-setpoint));
 
 pitch_dot_upd=pitch_dot+Ts*psi_double_dot;
 pitch_upd=pitch+Ts*pitch_dot;

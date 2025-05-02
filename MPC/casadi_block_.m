@@ -1,4 +1,4 @@
-classdef casadi_block < matlab.System & matlab.system.mixin.Propagates
+classdef casadi_block_ < matlab.System & matlab.system.mixin.Propagates
     % untitled Add summary here
     %
     % This template includes the minimum set of functions required

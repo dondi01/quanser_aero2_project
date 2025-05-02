@@ -1,12 +1,14 @@
-clear
-load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
-% load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_0_11.mat
-% data_tmp=data;
-% load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_11_24.mat
-% data=[data_tmp,data];
+%clear
+%load ..\experiments_data\VOLTAGE-SPEED\Voltage2SpeedFromZero.mat
+%load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_0_11.mat
+%data_tmp=data;
+%load ..\experiments_data\DYNAMIC_YAW\DYNAMIC_YAW\YAW_DYNAMIC_11_24.mat
+%data=[data_tmp,data];
 %load ..\experiments_data\DYNAMIC_PITCH\DYNAMIC_PITCH\PITCH_DYNAMIC_ZERO_IN_M0_SHIFTED.mat 
 
+%load ..\experiments_data\DYNAMIC_YAW\OL_NEG_YAW.mat
 
+%data=data(:,1:48000);
 t=data(1,:)';
 t=0:(t(2)-t(1)):length(t)/500;
 t=t(1:end-1)';
@@ -18,13 +20,30 @@ I1=data(5,:)';
 Omega0=[t,data(10,:)'];
 Omega1=[t,data(11,:)'];
 yaw=[t,data(7,:)'];
-%yaw_dot=[t,derivate_better(data(7,:))'];
+%yaw_dot=[t,data(14,:)'];
+yaw_dot=[t,derivate_better(data(7,:))'];
 pitch=[t,data(6,:)'];
 
 
 %AL_parameters;
 options=optimoptions('fmincon','Display','iter-detailed','FiniteDifferenceType',...
     'central');
+%% Yaw parameters(MATLAB)
+handle=@(params)simulate_yaw(t(2)-t(1),[0,0,0],V1(:,2),yaw(:,2),yaw_dot(:,2).*(yaw_dot(:,2)<8),params,Omega1(:,2));
+%beta_opt=fmincon(handle,0.0029,[],[],[],[],[],[],[],options)
+
+[f,yaw_sim,yaw_dot_sim]=simulate_yaw(t(2)-t(1),[0,0,0],V1(:,2),yaw(:,2),yaw_dot(:,2),beta_opt,Omega1(:,2));
+
+plot(yaw_sim)
+hold on
+plot(yaw(:,2))
+hold off
+
+figure
+plot(yaw_dot_sim)
+hold on
+plot(yaw_dot(:,2).*(abs(yaw_dot)<10))
+hold off
 %% Pitch parameters 
 handle=@(params)pitch_err(params,pitch(:,2));
 fmincon(handle,0.0016918,-1,0,[],[],[],[],[],options)

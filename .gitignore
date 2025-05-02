@@ -8,3 +8,8 @@
 *.mat
 *.mat
 *.mat
+/MODELS/2DoF Model/slprj
+/PID/slprj
+/MPC/ON_REAL_SYS_quarc_win64
+/PID/CONTROLLED_PID/slprj
+*.rt-win64
